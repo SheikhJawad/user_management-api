@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_app','rest_framework',
     'rest_framework_simplejwt',
+    
 ]
 
 MIDDLEWARE = [
@@ -127,6 +128,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
 
@@ -147,3 +149,9 @@ SIMPLE_JWT = {
     "JWK_URL": None,
     "LEEWAY": 0,
 }
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hafizjawad858@gmail.com'
+EMAIL_HOST_PASSWORD = 'ezbd tjik wcma gbhg'
