@@ -11,8 +11,8 @@ class UserToken(models.Model):
     is_logged_in = models.BooleanField(default=True)
     
     def logout(self):
-        self.is_logged_in=False
-        self.access_token=''
+        self.is_logged_in = False
+        self.access_token = ''
         self.save()
 
     def __str__(self):

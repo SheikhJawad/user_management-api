@@ -1,19 +1,20 @@
 from django.contrib.auth import authenticate
-from rest_framework import generics,permissions
+from rest_framework import generics,permissions,status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer,PasswordResetRequestSerializer, PasswordResetConfirmSerializer,CurrentPasswordSerializer,PasswordUpdateSerializer
+from .serializers import RegisterSerializer, LoginSerializer,PasswordResetRequestSerializer, PasswordResetConfirmSerializer,CurrentPasswordSerializer,PasswordUpdateSerializer,UserUpdateSerializer
 from .models import *
 from django.contrib.auth.tokens import default_token_generator
-from rest_framework import status
 from .serializers import PasswordResetConfirmSerializer
 from django.contrib.auth import get_user_model
-from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from rest_framework.exceptions import PermissionDenied
+from rest_framework_simplejwt.tokens import RefreshToken
+
 User = get_user_model()
+
 
 
 
@@ -42,34 +43,45 @@ class LoginView(generics.GenericAPIView):
 
         return Response({
             'message': 'Logged in successfully', 
-             'refresh': user.token.refresh_token,
+             'refresh': str(refresh),
             
             
         })
-    
+
+
+# class LogoutView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def post(self, request, *args, **kwargs):
+#         try:
+#             user_token = UserToken.objects.get(user=request.user)
+#             # Log out the user and invalidate the token
+#             user_token.logout()
+#         except UserToken.DoesNotExist:
+#             return Response({'error': 'User token does not exist'}, status=400)
+
+#         return Response({'message': 'Logged out successfully'})
+
 class LogoutView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]  # Adjust as needed
 
     def post(self, request, *args, **kwargs):
+        refresh_token = request.data.get('refresh_token')
+        
+        if not refresh_token:
+            return Response({'error': 'Refresh token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
-            user_token = UserToken.objects.get(user=request.user)
-            # Log out the user and invalidate the token
-            user_token.logout()
+           
+            user_token = UserToken.objects.get(refresh_token=refresh_token)
+            user_token.logout() 
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            
+            return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
+        
         except UserToken.DoesNotExist:
-            return Response({'error': 'User token does not exist'}, status=400)
-
-        return Response({'message': 'Logged out successfully'})
-# class UserDeleteView(generics.DestroyAPIView):
-#     queryset = User.objects.all()
-#     permission_classes = [IsAuthenticated]
-
-#     def delete(self, request, *args, **kwargs):
-#         user = self.get_object()
-#         user.delete()
-#         return Response({'message': 'User deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
-
-
-
+            return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
 
 class PasswordResetRequestView(APIView):
     def post(self, request, *args, **kwargs):
@@ -179,3 +191,20 @@ class RefreshTokenView(APIView):
         
 
 
+
+
+class UserUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserUpdateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self,  **kwargs):
+       
+        return generics.get_object_or_404(User, pk=self.kwargs['pk'])    ## USER CAN BE RETRIVE BY THERE IDS TO MAKE CHANGES
+
+    def destroy(self):
+        user = self.get_object()
+        if user.is_superuser:
+            raise PermissionDenied("Superuser cannot be deleted.")
+        self.perform_destroy(user)
+        return Response(status=status.HTTP_204_NO_CONTENT)

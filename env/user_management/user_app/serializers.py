@@ -1,6 +1,10 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
+
+User = get_user_model()
 
 
 
@@ -72,5 +76,18 @@ class PasswordResetRequestSerializer(serializers.Serializer):
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
     token = serializers.CharField()
-   
     new_password = serializers.CharField()
+
+
+
+class UserUpdateSerializer(serializers.ModelSerializer): # USER UPDATE SERILAIZER
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email','username'] 
+
+    def update(self, instance, validated_data):
+     
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
