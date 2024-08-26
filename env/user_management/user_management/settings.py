@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.116']
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -173,11 +173,9 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 sentry_sdk.init(
-    dsn="https://fe973d451a26c2c43a48517c7bf113e6@o4507831910203392.ingest.us.sentry.io/4507831915642880",  # Replace with your Sentry DSN
+
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,  # Adjust this for performance monitoring
 )
 
-## new relic key NRAK-P7TJGT1ZX2BRF5O1ERB4JNE3X1A
-=======
->>>>>>> d709c88ae5128338eb1d89d2f1cda74eac74d06d
+
