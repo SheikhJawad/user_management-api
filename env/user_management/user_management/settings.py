@@ -168,6 +168,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
+<<<<<<< HEAD
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -178,3 +179,5 @@ sentry_sdk.init(
 )
 
 ## new relic key NRAK-P7TJGT1ZX2BRF5O1ERB4JNE3X1A
+=======
+>>>>>>> d709c88ae5128338eb1d89d2f1cda74eac74d06d
