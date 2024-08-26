@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.116']
 
 
 # Application definition
@@ -41,6 +41,12 @@ INSTALLED_APPS = [
     'user_app','rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
+    'health_check',                            
+    'health_check.db',                         
+    'health_check.cache',                       
+    'health_check.storage',                     
+    
 ]
 
 MIDDLEWARE = [
@@ -49,8 +55,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
 ]
 
 ROOT_URLCONF = 'user_management.urls'
@@ -134,11 +142,7 @@ REST_FRAMEWORK = {
 }
 
 from datetime import  timedelta
-# settings.py
 
-from datetime import timedelta
-
-# settings.py
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -162,5 +166,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'hafizjawad858@gmail.com'
-EMAIL_HOST_PASSWORD = 'ezbd tjik wcma gbhg'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://fe973d451a26c2c43a48517c7bf113e6@o4507831910203392.ingest.us.sentry.io/4507831915642880",  # Replace with your Sentry DSN
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,  # Adjust this for performance monitoring
+)
+
+## new relic key NRAK-P7TJGT1ZX2BRF5O1ERB4JNE3X1A

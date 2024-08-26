@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_prometheus.models import ExportModelOperationsMixin
 
 
 class UserToken(models.Model):
