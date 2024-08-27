@@ -14,15 +14,50 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_yasg.openapi import Schema, TYPE_OBJECT, TYPE_STRING, TYPE_ARRAY
 from drf_yasg.utils import swagger_auto_schema
-from sentry_sdk import capture_message, capture_exception
+from sentry_sdk import capture_message, capture_exception,start_span
 from sentry_sdk import start_span
 from drf_yasg import openapi
-import sentry_sdk
-from django.http import HttpResponse
+from django.utils import timezone
 User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
+
+# class LoginView(generics.GenericAPIView):
+#     serializer_class = LoginSerializer
+
+#     def post(self, request, *args, **kwargs):
+#         with start_span(op="login_view", description="Processing login request"):
+#             username = request.data.get('username')
+#             password = request.data.get('password')
+
+#             capture_message(f"Login attempt by username: {username}")
+
+#             try:
+#                 user = authenticate(username=username, password=password)
+#                 if user is None:
+#                     capture_message(f"Invalid login attempt by username: {username}", level="warning")
+#                     return Response({'error': 'Invalid credentials'}, status=400)
+
+#                 capture_message(f"Successful login by username: {username}", level="info")
+
+#                 refresh = RefreshToken.for_user(user)
+#                 access = str(refresh.access_token)
+
+#                 user_token, created = UserToken.objects.get_or_create(user=user)
+#                 user_token.access_token = access
+#                 user_token.refresh_token = str(refresh)
+#                 user_token.is_logged_in = True
+#                 user_token.save()
+
+#                 return Response({
+#                     'message': 'Logged in successfully',
+#                     'refresh': str(refresh),
+#                 })
+
+#             except Exception as e:
+#                 capture_exception(e)
+#                 return Response({'error': str(e)}, status=500)
 
 
 
@@ -33,35 +68,76 @@ class LoginView(generics.GenericAPIView):
         with start_span(op="login_view", description="Processing login request"):
             username = request.data.get('username')
             password = request.data.get('password')
+            ip_address = self.get_client_ip(request)
 
             capture_message(f"Login attempt by username: {username}")
 
             try:
-                user = authenticate(username=username, password=password)
-                if user is None:
-                    capture_message(f"Invalid login attempt by username: {username}", level="warning")
+                user = self.get_user(username)
+                if not user:
                     return Response({'error': 'Invalid credentials'}, status=400)
 
-                capture_message(f"Successful login by username: {username}", level="info")
+                if self.is_user_locked_out(user):
+                    return Response({'error': 'Account locked. Try again later.'}, status=403)
 
-                refresh = RefreshToken.for_user(user)
-                access = str(refresh.access_token)
-
-                user_token, created = UserToken.objects.get_or_create(user=user)
-                user_token.access_token = access
-                user_token.refresh_token = str(refresh)
-                user_token.is_logged_in = True
-                user_token.save()
-
-                return Response({
-                    'message': 'Logged in successfully',
-                    'refresh': str(refresh),
-                })
+                if self.authenticate_user(user, password):
+                    return self.login_success(user)
+                else:
+                    return self.login_failure(user, ip_address)
 
             except Exception as e:
                 capture_exception(e)
                 return Response({'error': str(e)}, status=500)
 
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        return x_forwarded_for.split(',')[0] if x_forwarded_for else request.META.get('REMOTE_ADDR')
+
+    def get_user(self, username):
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        return User.objects.filter(username=username).first()
+
+    def is_user_locked_out(self, user):
+        settings = LoginSettings.get_settings()
+        recent_attempts = LoginAttempt.get_recent_attempts(user, minutes=settings.lockout_duration)
+        return recent_attempts.count() >= settings.max_attempts
+
+    def authenticate_user(self, user, password):
+        return authenticate(username=user.username, password=password) is not None
+
+    def login_success(self, user):
+        capture_message(f"Successful login by username: {user.username}", level="info")
+        refresh = RefreshToken.for_user(user)
+        access = str(refresh.access_token)
+
+        user_token, created = UserToken.objects.update_or_create(
+            user=user,
+            defaults={
+                'access_token': access,
+                'refresh_token': str(refresh),
+                'is_logged_in': True
+            }
+        )
+
+        LoginAttempt.objects.create(user=user, successful=True, ip_address=self.get_client_ip(self.request))
+
+        return Response({
+            'message': 'Logged in successfully',
+            'refresh': str(refresh),
+        })
+
+    def login_failure(self, user, ip_address):
+        capture_message(f"Invalid login attempt by username: {user.username}", level="warning")
+        LoginAttempt.objects.create(user=user, successful=False, ip_address=ip_address)
+        
+        settings = LoginSettings.get_settings()
+        recent_attempts = LoginAttempt.get_recent_attempts(user, minutes=settings.lockout_duration)
+        
+        if recent_attempts.count() >= settings.max_attempts:
+            return Response({'error': 'Account locked. Try again later.'}, status=403)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=400)
 
 class LogoutView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -301,21 +377,6 @@ class RefreshTokenView(APIView):
 
 
 
-# class UserUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UserUpdateSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-#     def get_object(self, **kwargs):
-       
-#         return generics.get_object_or_404(User, pk=self.kwargs['pk'])    ## USER CAN BE RETRIVE BY THERE IDS TO MAKE CHANGES
-
-#     def destroy(self):
-#         user = self.get_object()
-#         if user.is_superuser:
-#             raise PermissionDenied("Superuser cannot be deleted.")
-#         self.perform_destroy(user)
-#         return Response(status=status.HTTP_204_NO_CONTENT)
 class UserUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
@@ -346,3 +407,9 @@ def track_button_click(request):
         }
     )
     return HttpResponse("Button click tracked!")
+
+
+
+from datetime import timedelta
+from django.utils import timezone
+

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.116']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'health_check',                            
     'health_check.db',                         
     'health_check.cache',                       
-    'health_check.storage',                     
+    'health_check.storage',  
+                   
     
 ]
 
@@ -59,9 +60,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
+  
 ]
 
-ROOT_URLCONF = 'user_management.urls'
 
 TEMPLATES = [
     {
@@ -148,8 +149,8 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
      "UPDATE_LAST_LOGIN": False,
-    'ROTATE_REFRESH_TOKENS': False,  # Set to True if you want to rotate refresh tokens
-    'BLACKLIST_AFTER_ROTATION': True,  # Ensure tokens are blacklisted after rotation
+    'ROTATE_REFRESH_TOKENS': False,  
+    'BLACKLIST_AFTER_ROTATION': True, 
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
@@ -166,9 +167,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-<<<<<<< HEAD
+
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -178,6 +177,4 @@ sentry_sdk.init(
     traces_sample_rate=1.0,  # Adjust this for performance monitoring
 )
 
-## new relic key NRAK-P7TJGT1ZX2BRF5O1ERB4JNE3X1A
-=======
->>>>>>> d709c88ae5128338eb1d89d2f1cda74eac74d06d
+ROOT_URLCONF = 'user_management.urls'
