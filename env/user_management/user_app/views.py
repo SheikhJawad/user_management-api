@@ -18,6 +18,7 @@ from sentry_sdk import capture_message, capture_exception,start_span
 from sentry_sdk import start_span
 from drf_yasg import openapi
 from django.utils import timezone
+import sentry_sdk
 User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
@@ -205,14 +206,32 @@ class PasswordResetRequestView(APIView):
                 user_profile.password_reset_token = token
                 user_profile.save()
 
-                reset_link = f"http://127.0.0.1:8000/password-reset/confirm/?token={token}"
+                # reset_link = f"http://127.0.0.1:8000/password-reset/confirm/? your grnreate token for password reset is this =  {token}"
+                reset_link = f"http://127.0.0.1:8000/password-reset/confirm/"
+
+                # Email content
+                email_subject = 'Password Reset Request'
+                email_body = f"""
+                <html>
+                <body>
+                    <p>Hello,</p>
+                    <p>We received a request to reset your password. To proceed with the password reset, please click the link below:</p>
+                    <p><a href="{reset_link}">Reset Password</a></p>
+                    <p>Your password reset token is:</p>
+                    <p><strong>{token}</strong></p>
+                    <p>Please use this token to reset your password. If you did not request a password reset, please ignore this email.</p>
+                    <p>Thank you,<br>Jerrys&Co</p>
+                </body>
+                </html>
+                """
 
                 send_mail(
-                    'Password Reset Request',
-                    f'Click the link to reset your password: {reset_link}',
+                    email_subject,
+                    email_body,
                     settings.EMAIL_HOST_USER,
                     [email],
                     fail_silently=False,
+                    html_message=email_body  # This enables HTML formatting in the email
                 )
                 return Response({'detail': 'Password reset link sent.'}, status=status.HTTP_200_OK)
             except User.DoesNotExist:
