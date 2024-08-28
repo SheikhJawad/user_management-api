@@ -2,15 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "user_managment/wsgi.py",
+      "src": "user_management/wsgi.py",
       "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb" }
+      "config": { "maxLambdaSize": "50mb" }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "user_managment/wsgi.py"
+      "dest": "user_management/wsgi.py"
     }
   ]
 }
