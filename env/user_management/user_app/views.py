@@ -12,54 +12,19 @@ from django.conf import settings
 from django.core.mail import send_mail
 from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.tokens import RefreshToken
-from drf_yasg.openapi import Schema, TYPE_OBJECT, TYPE_STRING, TYPE_ARRAY
 from drf_yasg.utils import swagger_auto_schema
 from sentry_sdk import capture_message, capture_exception,start_span
 from sentry_sdk import start_span
 from drf_yasg import openapi
 from django.utils import timezone
 import sentry_sdk
+from datetime import timedelta
+
+
 User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
-
-# class LoginView(generics.GenericAPIView):
-#     serializer_class = LoginSerializer
-
-#     def post(self, request, *args, **kwargs):
-#         with start_span(op="login_view", description="Processing login request"):
-#             username = request.data.get('username')
-#             password = request.data.get('password')
-
-#             capture_message(f"Login attempt by username: {username}")
-
-#             try:
-#                 user = authenticate(username=username, password=password)
-#                 if user is None:
-#                     capture_message(f"Invalid login attempt by username: {username}", level="warning")
-#                     return Response({'error': 'Invalid credentials'}, status=400)
-
-#                 capture_message(f"Successful login by username: {username}", level="info")
-
-#                 refresh = RefreshToken.for_user(user)
-#                 access = str(refresh.access_token)
-
-#                 user_token, created = UserToken.objects.get_or_create(user=user)
-#                 user_token.access_token = access
-#                 user_token.refresh_token = str(refresh)
-#                 user_token.is_logged_in = True
-#                 user_token.save()
-
-#                 return Response({
-#                     'message': 'Logged in successfully',
-#                     'refresh': str(refresh),
-#                 })
-
-#             except Exception as e:
-#                 capture_exception(e)
-#                 return Response({'error': str(e)}, status=500)
-
 
 
 class LoginView(generics.GenericAPIView):
@@ -168,12 +133,12 @@ class LogoutView(APIView):
             return Response({'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
         
         except UserToken.DoesNotExist:
-            # Capture the exception in Sentry
+      
             sentry_sdk.capture_exception(Exception('Invalid refresh token'))
             return Response({'error': 'Invalid refresh token'}, status=status.HTTP_400_BAD_REQUEST)
         
         except Exception as e:
-            # Capture any other exceptions in Sentry
+           
             sentry_sdk.capture_exception(e)
             return Response({'error': 'An error occurred'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)        
 
@@ -209,7 +174,7 @@ class PasswordResetRequestView(APIView):
                 # reset_link = f"http://127.0.0.1:8000/password-reset/confirm/? your grnreate token for password reset is this =  {token}"
                 reset_link = f"http://127.0.0.1:8000/password-reset/confirm/"
 
-                # Email content
+           
                 email_subject = 'Password Reset Request'
                 email_body = f"""
                 <html>
@@ -231,7 +196,7 @@ class PasswordResetRequestView(APIView):
                     settings.EMAIL_HOST_USER,
                     [email],
                     fail_silently=False,
-                    html_message=email_body  # This enables HTML formatting in the email
+                    html_message=email_body  
                 )
                 return Response({'detail': 'Password reset link sent.'}, status=status.HTTP_200_OK)
             except User.DoesNotExist:
@@ -288,11 +253,11 @@ class PasswordResetConfirmView(APIView):
                 else:
                     return Response({'detail': 'Invalid token.'}, status=status.HTTP_400_BAD_REQUEST)
             except UserProfile.DoesNotExist as e:
-                # Capture the exception in Sentry
+              
                 sentry_sdk.capture_exception(e)
                 return Response({'detail': 'Invalid token.'}, status=status.HTTP_400_BAD_REQUEST)
             except Exception as e:
-                # Capture any other exceptions in Sentry
+                
                 sentry_sdk.capture_exception(e)
                 return Response({'detail': 'An error occurred.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -328,7 +293,7 @@ class PasswordChangeView(APIView):
             return Response({'detail': 'Password updated successfully.'}, status=status.HTTP_200_OK)
 
         except Exception as e:
-            # Capture any exceptions in Sentry
+       
             sentry_sdk.capture_exception(e)
             return Response({'detail': 'An error occurred while updating the password.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -390,7 +355,6 @@ class RefreshTokenView(APIView):
         except User.DoesNotExist:
             return Response({'detail': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            # Capture any exceptions in Sentry
             sentry_sdk.capture_exception(e)
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -415,20 +379,18 @@ class UserUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     
 
 
-def track_button_click(request):
-    # Increment a counter for button clicks
-    sentry_sdk.metrics.incr(
-        key="button_click",
-        value=1,
-        tags={
-            "browser": "Firefox",
-            "region": "EU"
-        }
-    )
-    return HttpResponse("Button click tracked!")
+# def track_button_click(request):
+ 
+#     sentry_sdk.metrics.incr(
+#         key="button_click",
+#         value=1,
+#         tags={
+#             "browser": "Firefox",
+#             "region": "EU"
+#         }
+#     )
+#     return HttpResponse("Button click tracked!")
 
 
 
-from datetime import timedelta
-from django.utils import timezone
 

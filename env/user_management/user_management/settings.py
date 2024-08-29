@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app',]
+ALLOWED_HOSTS = ['',]
 
 
 # Application definition
@@ -170,12 +170,12 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'hafizjawad858@gmail.com'
 EMAIL_HOST_PASSWORD = 'ezbd tjik wcma gbhg'
 # import sentry_sdk
-# from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
 
-# sentry_sdk.init(
-#     dsn="https://fe973d451a26c2c43a48517c7bf113e6@o4507831910203392.ingest.us.sentry.io/4507831915642880",  # Replace with your Sentry DSN
-#     integrations=[DjangoIntegration()],
-#     traces_sample_rate=1.0,  # Adjust this for performance monitoring
-# )
+sentry_sdk.init(
+   
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,  # Adjust this for performance monitoring
+)
 
 ROOT_URLCONF = 'user_management.urls'

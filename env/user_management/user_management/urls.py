@@ -20,13 +20,10 @@ from django.urls import re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from django_prometheus import exports
-from django.urls import path
-from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
-from django.http import HttpResponse
 
-def metrics_view(request):
-    return HttpResponse(generate_latest(), content_type=CONTENT_TYPE_LATEST)
+
+
+
 
 ...
 
@@ -49,7 +46,6 @@ urlpatterns =[
         path('api/',include('user_app.urls')),
         path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
         path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-        path('', include('django_prometheus.urls')),
         path('health/', include('health_check.urls')),
    
 ]

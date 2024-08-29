@@ -1,10 +1,8 @@
 from django.urls import path
-from django.http import HttpResponse
 from . import views
-def root_view(request):
-    return HttpResponse("This is a DRF project. Please use the appropriate API endpoints.")
+
 urlpatterns = [
-      path('', root_view),
+    
      path('register/', views.RegisterView.as_view(), name='register'),
      path('login/', views.LoginView.as_view(), name='login'),
      path('logout/',views.LogoutView.as_view(),name='logout'),
