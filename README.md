@@ -14,4 +14,4 @@ Features
 
 **Brute Force Attack Prevention**: Implementing strategies to prevent brute force attacks on login endpoints.
 
-**User Management**: Role-based access control (RBAC) with permissions for different user roles (e.g., Admin, User).
+**User Management**: Role-based access control (RBAC) with permissions for different user roles (e.g., Admin,moderator, User).
