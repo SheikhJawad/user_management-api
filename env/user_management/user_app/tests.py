@@ -58,37 +58,32 @@ class LoginViewTestCase(APITestCase):
 
 class LogoutViewTestCase(APITestCase):
     def setUp(self):
-        # Create a user
         self.user = User.objects.create_user(
-            username='testuser',
-            email='testuser@example.com',
-            password='TestPassword123!'
+            username='user',
+            email='testuser@gmail.com',
+            password='Password123!'
         )
-        # Generate a refresh token for the user
+        
         self.refresh_token = RefreshToken.for_user(self.user)
-        # Save the refresh token to the UserToken model with the user field
+      
         self.user_token = UserToken.objects.create(
-            user=self.user,  # Add this line to set the user
+            user=self.user,  
             access_token=str(self.refresh_token.access_token),
             refresh_token=str(self.refresh_token)
         )
-        # URL for the logout view
         self.url = reverse('logout')
 
     def test_logout_user(self):
-        # Test logging out with a valid refresh token
         response = self.client.post(self.url, {'refresh_token': str(self.refresh_token)}, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['message'], 'Logged out successfully')
 
     def test_logout_invalid_token(self):
-        # Test logging out with an invalid refresh token
         response = self.client.post(self.url, {'refresh_token': 'invalid_token'}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['error'], 'Invalid refresh token')
 
     def test_logout_missing_token(self):
-        # Test logging out with a missing refresh token
         response = self.client.post(self.url, {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data['error'], 'Refresh token is required')
