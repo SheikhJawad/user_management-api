@@ -176,7 +176,7 @@ SIMPLE_JWT = {
 }
 
 
-<<<<<<< HEAD
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -187,8 +187,9 @@ EMAIL_HOST_PASSWORD = ''
 # import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-=======
->>>>>>> 9728882 (adding Environment variables and hiding them in env)
+
+
+
 sentry_sdk.init(
     dsn=os.getenv('SENTRY_DSN'),
     integrations=[DjangoIntegration()],
