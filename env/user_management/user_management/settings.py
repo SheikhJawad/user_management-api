@@ -29,7 +29,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['']
+import os
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Add this line to confirm it's being loaded
+
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +44,8 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / os.getenv('DATABASE_NAME'),
+        'NAME': BASE_DIR / os.getenv('DATABASE_NAME', 'db.sqlite3'),  # Default to db.sqlite3 if not set
+
     }
     
 }
@@ -60,7 +66,7 @@ INSTALLED_APPS = [
     'user_app','rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
-    # 'drf_yasg',
+    'drf_yasg',
     'health_check',                            
     'health_check.db',                         
     'health_check.cache',                       

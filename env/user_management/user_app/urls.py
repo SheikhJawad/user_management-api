@@ -11,7 +11,7 @@ urlpatterns = [
      path('password-reset/confirm/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
      path('user-detail-token/', views.RefreshTokenView.as_view(), name='refresh-token'),
      path('user/<int:pk>/', views.UserUpdateDeleteView.as_view(), name='user-update-delete'),
-      path('track-button-click/', views.track_button_click, name='track_button_click'),
+   #   path('track-button-click/', views.track_button_click, name='track_button_click'),
      #  path('metrics/', exports.ExportToDjangoView, name='prometheus-metrics'),
      
 ]
