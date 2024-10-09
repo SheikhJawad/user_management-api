@@ -5,7 +5,6 @@ from django.core import mail
 from .models import UserToken,User,UserProfile,LoginAttempt, LoginSettings
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
-# from .serializers import RegisterSerializer, LoginSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer, CurrentPasswordSerializer, PasswordUpdateSerializer, UserUpdateSerializer
 User = get_user_model()
 from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
@@ -30,7 +29,7 @@ class LoginViewTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='testuser',
-            email='testuser@example.com',
+            email='testuser@outlook.com.com',
             password='TestPassword123!'
         )
         self.url = reverse('login')
@@ -43,7 +42,6 @@ class LoginViewTestCase(APITestCase):
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('refresh', response.data)
-        # self.assertIn('access', response.data)
         self.assertTrue(UserToken.objects.filter(user=self.user).exists())
 
     def test_login_invalid_credentials(self):
@@ -193,25 +191,25 @@ class RefreshTokenViewTestCase(APITestCase):
 
 class UserUpdateDeleteViewTestCase(APITestCase):
     def setUp(self):
-        # Create a regular user
+
         self.user = User.objects.create_user(
             username='testuser',
             email='testuser@example.com',
             password='TestPassword123!'
         )
-        # Create a superuser for testing permission restrictions
+    
         self.superuser = User.objects.create_superuser(
             username='superuser',
             email='superuser@example.com',
             password='SuperPassword123!'
         )
-        # Authenticate the regular user for testing
+       
         self.client.force_authenticate(user=self.user)
         self.url = reverse('user-update-delete', kwargs={'pk': self.user.id})
         self.superuser_url = reverse('user-update-delete', kwargs={'pk': self.superuser.id})
 
     def test_update_user(self):
-        # Test updating the user
+     
         data = {'first_name': 'Updated', 'last_name': 'User'}
         response = self.client.patch(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -220,15 +218,15 @@ class UserUpdateDeleteViewTestCase(APITestCase):
         self.assertEqual(self.user.last_name, 'User')
 
     def test_delete_user(self):
-        # Test deleting the user
+     
         response = self.client.delete(self.url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(User.objects.filter(id=self.user.id).exists())
 
     def test_delete_superuser(self):
-        # Authenticate as superuser for this test
+     
         self.client.force_authenticate(user=self.superuser)
-        # Test that superuser cannot be deleted
+      
         response = self.client.delete(self.superuser_url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertTrue(User.objects.filter(id=self.superuser.id).exists())
