@@ -39,7 +39,7 @@ print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Add this line to confirm it's being lo
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
 
 DATABASES = {
     'default': {
