@@ -31,7 +31,7 @@ DEBUG = True
 
 import os
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Add this line to confirm it's being loaded
 
