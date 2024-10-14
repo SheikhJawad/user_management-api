@@ -19,7 +19,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},  # Ensure the password is write-only
             'email': {'required': True}  # Make email required
         }
-
+    def validate_email(self, value):
+      
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already exists. Please try with a different email.")
+        return value
     def validate(self, data):
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError({"password": "Passwords must match."})
