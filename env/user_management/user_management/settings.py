@@ -21,7 +21,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '52.53.222.223').split(',')
+
 
 # Database
 DATABASES = {
@@ -53,9 +54,6 @@ JWT_SIGNING_KEY = os.getenv('JWT_SIGNING_KEY', 'default-jwt-signing-key')
 # Debugging purpose
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
-
-
-print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging purpose
 
 
 INSTALLED_APPS = [
