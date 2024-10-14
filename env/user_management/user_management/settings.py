@@ -34,7 +34,7 @@ DB_NAME="db.sqlite3"
 JWT_SIGNING_KEY="django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8"
 
 
-EMAIL_BACKEND=django."core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND=django="core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST="smtp.gmail.com"
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
