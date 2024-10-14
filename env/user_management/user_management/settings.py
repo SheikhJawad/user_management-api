@@ -10,6 +10,15 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 
+
+
+# Base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'  # URL prefix for static files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory to collect static files
+
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
