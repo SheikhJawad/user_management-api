@@ -26,7 +26,8 @@ DEBUG=True
 ALLOWED_HOSTS=''
 
 
-DB_ENGINE=django.db.backends.sqlite3
+DB_ENGINE = "django.db.backends.sqlite3"
+
 DB_NAME=db.sqlite3
 
 
