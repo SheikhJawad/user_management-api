@@ -28,7 +28,7 @@ ALLOWED_HOSTS=''
 
 DB_ENGINE = "django.db.backends.sqlite3"
 
-DB_NAME=db.sqlite3
+DB_NAME="db.sqlite3"
 
 
 JWT_SIGNING_KEY="django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8"
