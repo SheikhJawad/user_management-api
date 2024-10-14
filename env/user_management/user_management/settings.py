@@ -52,8 +52,7 @@ JWT_SIGNING_KEY = os.getenv('JWT_SIGNING_KEY', 'default-jwt-signing-key')
 
 # Debugging purpose
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
-print("EMAIL_HOST_USER:", EMAIL_HOST_USER)  # Debugging email user
-print("EMAIL_HOST_PASSWORD:", EMAIL_HOST_PASSWORD)  # Debugging email password
+
 
 
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging purpose
