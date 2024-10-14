@@ -27,28 +27,17 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / os.getenv('DATABASE_NAME', 'db.sqlite3'),  # Default to db.sqlite3 if not set
+        'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),  # Ensure correct environment variable
     }
 }
 
 # Email Configuration
-from pathlib import Path
-from dotenv import load_dotenv
-import os
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Load environment variables
-load_dotenv()
-
-# Email configuration
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "hafizjawad858@gmail.com"
-EMAIL_HOST_PASSWORD = "zsaq aqij mzlj pncv"  # Replace with your App Password
-
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'your-email@example.com')  # Use env variable
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'default-password')  # Use env variable
 
 # Sentry Configuration
 sentry_sdk.init(
@@ -60,6 +49,12 @@ sentry_sdk.init(
 
 # JWT Configuration (if needed)
 JWT_SIGNING_KEY = os.getenv('JWT_SIGNING_KEY', 'default-jwt-signing-key')
+
+# Debugging purpose
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
+print("EMAIL_HOST_USER:", EMAIL_HOST_USER)  # Debugging email user
+print("EMAIL_HOST_PASSWORD:", EMAIL_HOST_PASSWORD)  # Debugging email password
+
 
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)  # Debugging purpose
 
@@ -192,12 +187,6 @@ SIMPLE_JWT = {
 
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'hafizjawad858@gmail.com'
-EMAIL_HOST_PASSWORD = ''
 # import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
