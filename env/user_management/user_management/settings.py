@@ -9,19 +9,23 @@ from dotenv import load_dotenv
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-# Load environment variables
-load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+
 SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '52.53.222.223').split(',')
+ALLOWED_HOSTS = [
+    'localhost',  # For local development
+    '127.0.0.1',  # For local development
+    '52.53.222.223',  # Your server's IP address
+    # Add other hosts here as needed
+    '*',  # Allow all hosts (not recommended for production)
+]
 
 
 # Database
