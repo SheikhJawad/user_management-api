@@ -30,7 +30,7 @@ DB_ENGINE=django.db.backends.sqlite3
 DB_NAME=db.sqlite3
 
 
-JWT_SIGNING_KEY=django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8
+JWT_SIGNING_KEY="django-insecure-$988ciceg%_pq0by+5zr0jh0yf8_nkdc4-8))9j%9-qz#n3=e8"
 
 
 EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
@@ -41,7 +41,7 @@ EMAIL_HOST_USER=hafizjawad858@gmail.com
 EMAIL_HOST_PASSWORD=ezbd tjik wcma gbhg
 
 
-SENTRY_DSN=https://fe973d451a26c2c43a48517c7bf113e6@o4507831910203392.ingest.us.sentry.io/4507831915642880
+SENTRY_DSN="https://fe973d451a26c2c43a48517c7bf113e6@o4507831910203392.ingest.us.sentry.io/4507831915642880"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
