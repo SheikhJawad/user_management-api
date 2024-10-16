@@ -104,6 +104,7 @@ INSTALLED_APPS = [
                    
     
 ]
+DEBUG =TRUE
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
