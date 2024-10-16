@@ -20,6 +20,9 @@ SWAGGER_SETTINGS = {
 import os
 from pathlib import Path
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 # URL prefix for static files
 STATIC_URL = '/static/'
 
