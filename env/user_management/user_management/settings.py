@@ -104,7 +104,8 @@ INSTALLED_APPS = [
                    
     
 ]
-DEBUG = TRUE  # Incorrect
+DEBUG = True  # Correct
+ # Incorrect
 
 
 MIDDLEWARE = [
