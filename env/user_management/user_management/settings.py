@@ -18,12 +18,13 @@ SWAGGER_SETTINGS = {
 
 
 import os
-from pathlib import Path
 
-# settings.py
+# Assuming BASE_DIR is defined correctly
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join( 'staticfiles')  # or wherever your static files are collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Ensure this is a valid path
+
 
 
 
