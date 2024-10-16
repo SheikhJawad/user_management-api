@@ -172,16 +172,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
-    SWAGGER_SETTINGS = {
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# Swagger settings should be separate
+SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,  # Disable authentication for Swagger UI
+    'LOGIN_URL': None,
+    'LOGOUT_URL': None,
+    'SECURITY_DEFINITIONS': None,  # Remove default authorization UI from Swagger
 }
-}
+
 
 from datetime import  timedelta
 
