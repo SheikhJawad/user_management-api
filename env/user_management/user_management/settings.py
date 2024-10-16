@@ -20,19 +20,11 @@ SWAGGER_SETTINGS = {
 import os
 from pathlib import Path
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# settings.py
 
-
-# URL prefix for static files
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # or wherever your static files are collected
 
-# Define static files directories
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Adjust if your static files are in a different location
-]
-
-# This is where the collectstatic command will collect static files for production
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Base directory
