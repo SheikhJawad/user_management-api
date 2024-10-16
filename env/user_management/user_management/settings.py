@@ -173,6 +173,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
          'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
+    SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,  # Disable authentication for Swagger UI
+}
 }
 
 from datetime import  timedelta
