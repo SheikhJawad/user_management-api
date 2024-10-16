@@ -22,12 +22,12 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is where collectstatic will copy files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Collect static files here
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # This should point to your static files
-]
- # Ensure this is correctly set
+    os.path.join(BASE_DIR, 'static'),  # Your project's static files directory
+
 
 
 # Base directory
