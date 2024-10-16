@@ -23,7 +23,7 @@ from pathlib import Path
 # settings.py
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # or wherever your static files are collected
+STATIC_ROOT = os.path.join( 'staticfiles')  # or wherever your static files are collected
 
 
 
