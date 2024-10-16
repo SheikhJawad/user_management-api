@@ -9,7 +9,12 @@ from dotenv import load_dotenv
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': None,
+    'LOGOUT_URL': None,
+    'USE_SESSION_AUTH': False,  # Disable session authentication
+    'SECURITY_DEFINITIONS': None,  # Remove default authorization UI from Swagger
+}
 
 
 # Base directory
