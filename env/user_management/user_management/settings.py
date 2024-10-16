@@ -163,6 +163,8 @@ REST_FRAMEWORK = {
 }
 
 from datetime import  timedelta
+STATIC_ROOT = r'J:\django\deutics work\env\user_management-api\env\user_management\static'
+
 
 
 SIMPLE_JWT = {
