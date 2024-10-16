@@ -15,16 +15,21 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,  # Disable session authentication
     'SECURITY_DEFINITIONS': None,  # Remove default authorization UI from Swagger
 }
+import os
+from pathlib import Path
+
+# BASE_DIR is the directory containing the settings.py file
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Ensure this is correctly set
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Ensure this is correctly set
 
 
 # Base directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'  # URL prefix for static files
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory to collect static files
+
 
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
