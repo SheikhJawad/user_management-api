@@ -23,14 +23,21 @@ from datetime import timedelta
 
 User = get_user_model()
 
-class RegisterView(generics.CreateAPIView):
+class UserRegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            return Response({'user_id': user.id}, status=status.HTTP_201_CREATED)
+            return Response({
+                "username": user.username,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class LoginView(generics.GenericAPIView):
