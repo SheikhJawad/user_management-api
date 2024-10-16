@@ -32,8 +32,7 @@ ALLOWED_HOSTS = [
     'localhost',  # For local development
     '127.0.0.1',  # For local development
     '52.53.222.223',
-    '13.52.80.25'# Your server's IP address
-    # Add other hosts here as needed
+    '13.52.80.25',  # Your server's IP address
     '*',  # Allow all hosts (not recommended for production)
 ]
 
