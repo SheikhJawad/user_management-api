@@ -15,6 +15,8 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,  # Disable session authentication
     'SECURITY_DEFINITIONS': None,  # Remove default authorization UI from Swagger
 }
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Ensure this is correctly set
 
 
 # Base directory
