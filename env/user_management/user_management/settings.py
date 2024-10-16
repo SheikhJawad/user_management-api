@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Collect static files here
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Your project's static files directory
+    os.path.join(BASE_DIR, 'static'), ] # Your project's static files directory
 
 
 
