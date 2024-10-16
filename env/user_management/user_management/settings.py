@@ -15,14 +15,19 @@ SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,  # Disable session authentication
     'SECURITY_DEFINITIONS': None,  # Remove default authorization UI from Swagger
 }
+
+
 import os
 from pathlib import Path
 
-# BASE_DIR is the directory containing the settings.py file
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Ensure this is correctly set
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # This is where collectstatic will copy files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # This should point to your static files
+]
+ # Ensure this is correctly set
 
 
 # Base directory
