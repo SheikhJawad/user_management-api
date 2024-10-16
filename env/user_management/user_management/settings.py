@@ -161,7 +161,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-LOGIN_URL = '/admin/login/'  # or set to a custom login page if you have one
+LOGIN_URL = 'login/admin/'  # or set to a custom login page if you have one
 
 
 # Static files (CSS, JavaScript, Images)
