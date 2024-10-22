@@ -12,26 +12,18 @@ from sentry_sdk.integrations.django import DjangoIntegration
 SWAGGER_SETTINGS = {
     'LOGIN_URL': None,
     'LOGOUT_URL': None,
-    'USE_SESSION_AUTH': False,  # Disable session authentication
-    'SECURITY_DEFINITIONS': None,  # Remove default authorization UI from Swagger
+    'USE_SESSION_AUTH': False,  n
+    'SECURITY_DEFINITIONS': None,  
 }
 
 
-import os
 
-# Assuming BASE_DIR is defined correctly
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Ensure this is a valid path
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
 
-
-
-
-# Base directory
-
-
-# Static files (CSS, JavaScript, Images)
 
 
 load_dotenv()
@@ -40,15 +32,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [
-    'localhost',  # For local development
-    '127.0.0.1',  # For local development
+    'localhost',  
+    '127.0.0.1',  
     '52.53.222.223',
-    '13.52.80.25',  # Your server's IP address
-    '*',  # Allow all hosts (not recommended for production)
+    '13.52.80.25',  
+    '*',  
 ]
 
 
@@ -56,19 +47,18 @@ ALLOWED_HOSTS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),  # Ensure correct environment variable
+        'NAME': BASE_DIR / os.getenv('DB_NAME', 'db.sqlite3'),  
     }
 }
 
-# Email Configuration
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'your-email@example.com')  # Use env variable
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'default-password')  # Use env variable
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'your-email@example.com')  
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'default-password')  
 
-# Sentry Configuration
 sentry_sdk.init(
     dsn=os.getenv('SENTRY_DSN'),
     integrations=[DjangoIntegration()],
@@ -76,10 +66,8 @@ sentry_sdk.init(
     send_default_pii=True
 )
 
-# JWT Configuration (if needed)
-JWT_SIGNING_KEY = os.getenv('JWT_SIGNING_KEY', 'default-jwt-signing-key')
 
-# Debugging purpose
+JWT_SIGNING_KEY = os.getenv('JWT_SIGNING_KEY', 'default-jwt-signing-key')
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 
@@ -102,22 +90,22 @@ INSTALLED_APPS = [
                    
     
 ]
-DEBUG = True  # Correct
- # Incorrect
+DEBUG = True 
+
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',  # Ensure CSRF is correctly configured for Swagger
+    'django.middleware.csrf.CsrfViewMiddleware',  
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',  # Ensure you have both Prometheus middlewares
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',  
     'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
-X_FRAME_OPTIONS = 'SAMEORIGIN'  # Allows the Swagger UI to be displayed
+X_FRAME_OPTIONS = 'SAMEORIGIN' 
 
 
 TEMPLATES = [
@@ -164,16 +152,13 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-LOGIN_URL = 'login/admin/'  # or set to a custom login page if you have one
+LOGIN_URL = 'login/admin/' 
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
+
 
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
@@ -185,16 +170,16 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
      'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # This allows any user to access API endpoints
+        'rest_framework.permissions.AllowAny',  
     ],
 }
 
-# Swagger settings should be separate
+
 SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,  # Disable authentication for Swagger UI
+    'USE_SESSION_AUTH': False,  
     'LOGIN_URL': None,
     'LOGOUT_URL': None,
-    'SECURITY_DEFINITIONS': None,  # Remove default authorization UI from Swagger
+    'SECURITY_DEFINITIONS': None,  
 }
 
 
@@ -222,8 +207,8 @@ SIMPLE_JWT = {
 
 
 
-# import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+
+
 
 
 
